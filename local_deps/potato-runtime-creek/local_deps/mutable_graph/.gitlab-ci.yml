@@ -1,0 +1,24 @@
+# use docker image with latex preinstalled
+# since there is no official latex image, use https://github.com/blang/latex-docker
+# possible alternative: https://github.com/natlownes/docker-latex
+image: elixir:latest
+
+stages:
+  - test 
+  - analyze 
+
+before_script:
+  - mix local.rebar --force
+  - mix local.hex --force
+  - mix deps.get
+
+analyze_job:
+  stage: analyze
+  script:
+    - mix dialyzer
+
+
+test_job:
+  stage: test  
+  script: 
+      - mix test
